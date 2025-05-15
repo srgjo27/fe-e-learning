@@ -1,9 +1,7 @@
-import DashboardPage from "./dashboard/page";
-
 export default function Home() {
   return (
-    <main className="min-h-screen bg-background">
-      <DashboardPage />
-    </main>
+    <div className="p-4">
+      <h1 className="text-2xl font-semibold">Selamat datang di Home</h1>
+    </div>
   );
 }
