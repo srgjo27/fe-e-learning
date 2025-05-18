@@ -11,7 +11,7 @@ export function useAuth() {
     setLoading(true);
     setError(null);
     try {
-      const data = await apiRequest("v1/auth/login", {
+      const data = await apiRequest("/v1/auth/login", {
         method: "POST",
         body: JSON.stringify({ email, password }),
       });
@@ -29,7 +29,7 @@ export function useAuth() {
     setLoading(true);
     setError(null);
     try {
-      const data = await apiRequest("v1/auth/register", {
+      const data = await apiRequest("/v1/auth/register", {
         method: "POST",
         body: JSON.stringify({ email, password }),
       });

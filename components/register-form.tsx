@@ -1,17 +1,35 @@
+"use client";
+
 import { GalleryVerticalEnd } from "lucide-react"
 import Link from 'next/link'
 import { cn } from "@/lib/utils"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
+import { useState } from "react"
+import { useAuth } from "@/hooks/use-auth"
+import { useRouter } from "next/navigation";
 
 export function RegisterForm({
     className,
     ...props
 }: React.ComponentPropsWithoutRef<"div">) {
+    const [email, setEmail] = useState("");
+    const [password, setPassword] = useState("");
+    const { register, error, loading } = useAuth();
+    const router = useRouter();
+
+    const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+        e.preventDefault();
+        const result = await register(email, password);
+        if (result) {
+            router.push("/auth/login");
+        }
+    };
+
     return (
         <div className={cn("flex flex-col gap-6", className)} {...props}>
-            <form>
+            <form onSubmit={handleSubmit}>
                 <div className="flex flex-col gap-6">
                     <div className="flex flex-col items-center gap-2">
                         <div className="flex h-8 w-8 items-center justify-center rounded-md">
@@ -32,6 +50,8 @@ export function RegisterForm({
                                 id="email"
                                 type="email"
                                 placeholder="email"
+                                value={email}
+                                onChange={(e) => setEmail(e.target.value)}
                                 required
                             />
                         </div>
@@ -41,11 +61,18 @@ export function RegisterForm({
                                 id="password"
                                 type="password"
                                 placeholder="password"
+                                value={password}
+                                onChange={(e) => setPassword(e.target.value)}
                                 required
                             />
                         </div>
-                        <Button type="submit" className="w-full">
-                            Register
+                        {error && (
+                            <div className="text-red-500 text-sm">
+                                {error}
+                            </div>
+                        )}
+                        <Button type="submit" className="w-full" disabled={loading}>
+                            {loading ? "..." : "Register"}
                         </Button>
                     </div>
                 </div>
